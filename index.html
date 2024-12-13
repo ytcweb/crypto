@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mind Map</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .line {
+      position: absolute;
+      width: 2px;
+      background: #32cd32;
+      transform-origin: top left;
+    }
+
+    .mindmap {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: 500px;
+    }
+
+    .node {
+      position: absolute;
+      padding: 10px 20px;
+      border-radius: 20px;
+      background: #32cd32;
+      color: black;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .node:hover {
+      transform: scale(1.1);
+    }
+
+    .node.sub {
+      background: #ffd700;
+    }
+
+    .node.date {
+      background: #111;
+      color: #ffd700;
+      font-size: 12px;
+      border: 1px solid #ffd700;
+    }
+
+    
+  </style>
+</head>
+<body>
+  <div class="mindmap">
+    <div class="node" id="main" style="top: 200px; left: 50px;">Telegram Crypto</div>
+    <div class="node sub" id="hamster" style="top: 100px; left: 300px;">Hamster</div>
+    <div class="node date" style="top: 160px; left: 450px;">Q3 2025</div>
+    <div class="node sub" id="tonxdao" style="top: 300px; left: 300px;">TonxDao</div>
+    <div class="node date" style="top: 360px; left: 450px;">Q1 2025</div>
+  </div>
+
+  <script>
+    const connections = [
+      { from: "main", to: "hamster" },
+      { from: "main", to: "tonxdao" },
+    ];
+
+    const createLine = (x1, y1, x2, y2) => {
+      const line = document.createElement("div");
+      line.className = "line";
+
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+      line.style.width = `${length}px`;
+      line.style.top = `${y1}px`;
+      line.style.left = `${x1}px`;
+      line.style.transform = `rotate(${angle}deg)`;
+      document.querySelector(".mindmap").appendChild(line);
+    };
+
+    connections.forEach(({ from, to }) => {
+      const fromNode = document.getElementById(from);
+      const toNode = document.getElementById(to);
+
+      const x1 = fromNode.offsetLeft + fromNode.offsetWidth / 2;
+      const y1 = fromNode.offsetTop + fromNode.offsetHeight / 2;
+      const x2 = toNode.offsetLeft + toNode.offsetWidth / 2;
+      const y2 = toNode.offsetTop + toNode.offsetHeight / 2;
+
+      createLine(x1, y1, x2, y2);
+    });
+  </script>
+</body>
+</html>
